@@ -466,6 +466,11 @@ public class UCropActivity extends AppCompatActivity {
                 window.setStatusBarColor(color);
             }
         }
+        // Android 15（API 35）起 targetSdk >= 35 强制边到边，状态栏/导航栏颜色设置不再生效，
+        // 系统栏区域显示的是根布局 fitsSystemWindows 留出的 padding，用状态栏颜色填充以保持原有效果
+        if (Build.VERSION.SDK_INT >= 35) {
+            findViewById(R.id.ucrop_photobox).setBackgroundColor(color);
+        }
     }
 
     private void setupAspectRatioWidget(@NonNull Intent intent) {

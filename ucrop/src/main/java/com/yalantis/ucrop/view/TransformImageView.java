@@ -328,6 +328,8 @@ public class TransformImageView extends AppCompatImageView {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (changed || (mBitmapDecoded && !mBitmapLaidOut)) {
+            int oldWidth = mThisWidth;
+            int oldHeight = mThisHeight;
 
             left = getPaddingLeft();
             top = getPaddingTop();
@@ -336,8 +338,23 @@ public class TransformImageView extends AppCompatImageView {
             mThisWidth = right - left;
             mThisHeight = bottom - top;
 
-            onImageLaidOut();
+            if (!mBitmapLaidOut) {
+                onImageLaidOut();
+            } else if (oldWidth != mThisWidth || oldHeight != mThisHeight) {
+                // 旋转、分屏、折叠屏展开等导致尺寸变化：保留用户当前的缩放/位移/旋转，不重置到初始位置
+                onImageRelaidOut(oldWidth, oldHeight);
+            }
         }
+    }
+
+    /**
+     * 图片已完成首次布局后，View 尺寸再次发生变化时回调。
+     * 子类需按新尺寸重新计算裁剪区并迁移当前图片矩阵。
+     *
+     * @param oldWidth  - 变化前去除 padding 的宽度
+     * @param oldHeight - 变化前去除 padding 的高度
+     */
+    protected void onImageRelaidOut(int oldWidth, int oldHeight) {
     }
 
     /**

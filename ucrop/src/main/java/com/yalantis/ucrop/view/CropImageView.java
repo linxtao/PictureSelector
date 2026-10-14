@@ -383,15 +383,7 @@ public class CropImageView extends TransformImageView {
             mTargetAspectRatio = drawableWidth / drawableHeight;
         }
 
-        int height = (int) (mThisWidth / mTargetAspectRatio);
-        if (height > mThisHeight) {
-            int width = (int) (mThisHeight * mTargetAspectRatio);
-            int halfDiff = (mThisWidth - width) / 2;
-            mCropRect.set(halfDiff, 0, width + halfDiff, mThisHeight);
-        } else {
-            int halfDiff = (mThisHeight - height) / 2;
-            mCropRect.set(0, halfDiff, mThisWidth, height + halfDiff);
-        }
+        setupCropRectForCurrentSize();
 
         calculateImageScaleBounds(drawableWidth, drawableHeight);
         setupInitialImagePosition(drawableWidth, drawableHeight);
@@ -402,6 +394,59 @@ public class CropImageView extends TransformImageView {
         if (mTransformImageListener != null) {
             mTransformImageListener.onScale(getCurrentScale());
             mTransformImageListener.onRotate(getCurrentAngle());
+        }
+    }
+
+    /**
+     * View 尺寸变化后按新尺寸重新计算裁剪区，并把当前图片矩阵从旧裁剪区等比迁移到新裁剪区，
+     * 使裁剪框内的图片内容、旋转角度和相对缩放保持不变。
+     * 不回调 onCropAspectRatioChanged：此时 {@link OverlayView} 尚未拿到新尺寸，由其 onLayout 自行重算裁剪框。
+     */
+    @Override
+    protected void onImageRelaidOut(int oldWidth, int oldHeight) {
+        final Drawable drawable = getDrawable();
+        if (drawable == null || mThisWidth <= 0 || mThisHeight <= 0 || mTargetAspectRatio <= 0) {
+            return;
+        }
+        // 进行中的动画基于旧坐标计算增量，继续执行会把图片拉回旧位置
+        cancelAllAnimations();
+
+        RectF oldCropRect = new RectF(mCropRect);
+        setupCropRectForCurrentSize();
+        calculateImageScaleBounds(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        if (oldCropRect.isEmpty()) {
+            setupInitialImagePosition(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        } else {
+            // 新旧裁剪区宽高比一致，按宽度比例缩放即可；以裁剪区中心为锚点平移，保证框内内容不变
+            float ratio = mCropRect.width() / oldCropRect.width();
+            Matrix matrix = new Matrix(mCurrentImageMatrix);
+            matrix.postTranslate(-oldCropRect.centerX(), -oldCropRect.centerY());
+            matrix.postScale(ratio, ratio);
+            matrix.postTranslate(mCropRect.centerX(), mCropRect.centerY());
+            setImageMatrix(matrix);
+            setImageToWrapCropBounds(false);
+        }
+
+        if (mTransformImageListener != null) {
+            mTransformImageListener.onScale(getCurrentScale());
+            mTransformImageListener.onRotate(getCurrentAngle());
+        }
+    }
+
+    /**
+     * 按当前 View 尺寸和 {@link #mTargetAspectRatio} 计算居中的最大裁剪区，写入 {@link #mCropRect}。
+     * 计算方式需与 {@link OverlayView#setupCropBounds()} 保持一致，两层才能对齐。
+     */
+    private void setupCropRectForCurrentSize() {
+        int height = (int) (mThisWidth / mTargetAspectRatio);
+        if (height > mThisHeight) {
+            int width = (int) (mThisHeight * mTargetAspectRatio);
+            int halfDiff = (mThisWidth - width) / 2;
+            mCropRect.set(halfDiff, 0, width + halfDiff, mThisHeight);
+        } else {
+            int halfDiff = (mThisHeight - height) / 2;
+            mCropRect.set(0, halfDiff, mThisWidth, height + halfDiff);
         }
     }
 

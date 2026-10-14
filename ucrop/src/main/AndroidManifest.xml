@@ -4,15 +4,18 @@
 
     <application>
 
-
+        <!--
+            targetSdk 36 起最短边 >= 600dp 的屏幕会忽略 screenOrientation，手机仍保持竖屏。
+            configChanges 需覆盖旋转、分屏、折叠屏展开等尺寸变化，由页面自行重新布局并保留裁剪状态，避免重建后丢失用户调整。
+        -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.yalantis.ucrop.UCropMultipleActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|smallestScreenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 

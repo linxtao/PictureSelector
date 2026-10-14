@@ -305,6 +305,9 @@ public class OverlayView extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (changed) {
+            int oldWidth = mThisWidth;
+            int oldHeight = mThisHeight;
+
             left = getPaddingLeft();
             top = getPaddingTop();
             right = getWidth() - getPaddingRight();
@@ -315,6 +318,21 @@ public class OverlayView extends View {
             if (mShouldSetupCropBounds) {
                 mShouldSetupCropBounds = false;
                 setTargetAspectRatio(mTargetAspectRatio);
+            } else if ((oldWidth != mThisWidth || oldHeight != mThisHeight)
+                    && mThisWidth > 0 && mThisHeight > 0 && !mCropViewRect.isEmpty()) {
+                // 尺寸变化（旋转、分屏、折叠屏展开）后按新尺寸重算裁剪框，并经 onCropRectUpdated 同步给 CropImageView
+                if (smoothAnimator != null) {
+                    // cancel 会触发 onAnimationEnd 把旧裁剪框回传给图片，需先移除监听
+                    smoothAnimator.removeAllListeners();
+                    smoothAnimator.removeAllUpdateListeners();
+                    smoothAnimator.cancel();
+                }
+                if (mFreestyleCropMode != FREESTYLE_CROP_MODE_DISABLE) {
+                    // 自由裁剪时用户可能拖动过裁剪框，沿用当前框的宽高比，与 CropImageView 中记录的比例保持一致
+                    mTargetAspectRatio = mCropViewRect.width() / mCropViewRect.height();
+                }
+                setupCropBounds();
+                postInvalidate();
             }
         }
     }
