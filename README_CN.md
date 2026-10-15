@@ -472,6 +472,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
+### 第三方声明
+
+本仓库是 [PictureSelector](https://github.com/LuckSiege/PictureSelector) 的修改版 fork，包含以下项目的衍生代码：
+
+- [uCrop](https://github.com/Yalantis/uCrop)（ucrop 模块），Copyright 2017, Yalantis，Apache License 2.0
+- [Luban](https://github.com/Curzibn/Luban)（compress 模块），Copyright 郑梓斌，Apache License 2.0
+
+经 linxtao 修改的文件顶部均带有 "Modified by linxtao" 声明，详见 [NOTICE](NOTICE)。
+
 ## 联系方式
 Android开发交流  [662320389]() <br>
 Android开发交流  [619458861]() <br>

@@ -1,3 +1,10 @@
+/*
+ * Copyright 2017, Yalantis
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ *
+ * Modified by linxtao, 2026: fill the status bar area with the status bar color
+ * under Android 15 (API 35) enforced edge-to-edge.
+ */
 package com.yalantis.ucrop;
 
 import android.annotation.TargetApi;

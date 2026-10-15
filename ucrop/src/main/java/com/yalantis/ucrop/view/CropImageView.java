@@ -1,3 +1,10 @@
+/*
+ * Copyright 2017, Yalantis
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ *
+ * Modified by linxtao, 2026: recalculate the crop rect and migrate the image matrix
+ * when the view size changes, keeping the user's crop state.
+ */
 package com.yalantis.ucrop.view;
 
 import android.content.Context;

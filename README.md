@@ -468,6 +468,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
+### Third-party notices
+
+This is a modified fork of [PictureSelector](https://github.com/LuckSiege/PictureSelector). It contains code derived from:
+
+- [uCrop](https://github.com/Yalantis/uCrop) (ucrop module), Copyright 2017, Yalantis, Apache License 2.0
+- [Luban](https://github.com/Curzibn/Luban) (compress module), Copyright Zheng Zibin, Apache License 2.0
+
+Files modified by linxtao carry a "Modified by linxtao" notice at the top. See [NOTICE](NOTICE) for details.
+
 
 
 ## Effect

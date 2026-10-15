@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017, Yalantis
+    Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+
+    Modified by linxtao, 2026: extend configChanges for Android 16 (API 36) large-screen size changes.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yalantis.ucrop">
 

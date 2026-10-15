@@ -1,3 +1,9 @@
+/*
+ * Copyright 2017, Yalantis
+ * Licensed under the Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
+ *
+ * Modified by linxtao, 2026: recalculate the crop frame when the view size changes.
+ */
 package com.yalantis.ucrop.view;
 
 import android.animation.Animator;

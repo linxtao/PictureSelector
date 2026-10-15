@@ -1,0 +1,28 @@
+PictureSelector (linxtao fork)
+
+This repository is a modified fork of PictureSelector
+(https://github.com/LuckSiege/PictureSelector), Copyright 2016 Luck,
+licensed under the Apache License, Version 2.0.
+
+It also contains the following third-party works, each licensed under the
+Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0):
+
+* ucrop module
+  Derived from uCrop (https://github.com/Yalantis/uCrop)
+  Copyright 2017, Yalantis
+  Software doesn't collect, store or transfer data to Yalantis or third parties.
+  Emplacement of this Software is carried out locally at device.
+
+* compress module
+  Derived from Luban (https://github.com/Curzibn/Luban)
+  Copyright Zheng Zibin (郑梓斌)
+
+Modifications by linxtao
+---------------------
+Files changed by linxtao carry a "Modified by linxtao" notice at the top. Summary:
+
+* 2026: ucrop - Android 15 (API 35) edge-to-edge status bar background,
+  and Android 16 (API 36) large-screen orientation handling: keep the user's
+  crop state across rotation, split-screen and foldable size changes.
+
+This fork is not affiliated with or endorsed by Luck, Yalantis or Zheng Zibin.
