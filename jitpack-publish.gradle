@@ -1,0 +1,26 @@
+// JitPack 发布配置，需在模块 ext 中声明 PUBLISH_ARTIFACT_ID 后 apply。
+// JitPack 只有构建出多个模块时才使用 com.github.linxtao.PictureSelector:<PUBLISH_ARTIFACT_ID>:<tag> 坐标，
+// 单个模块会被重命名为 com.github.linxtao:PictureSelector:<tag>，因此 jitpack.yml 中至少要发布两个模块。
+// GROUP / VERSION 由 JitPack 构建时注入（VERSION 即 tag 名），本地构建回退到默认值。
+apply plugin: 'maven-publish'
+
+android {
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = System.getenv('GROUP') ?: 'com.github.linxtao'
+                artifactId = PUBLISH_ARTIFACT_ID
+                version = System.getenv('VERSION') ?: cfgs.versionName
+            }
+        }
+    }
+}
