@@ -2,7 +2,11 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 Properties localProperties = new Properties()
-localProperties.load(project.rootProject.file('local.properties').newDataInputStream())
+// local.properties 不入库，JitPack 等 CI 环境下不存在，缺失时跳过读取，后续会因缺少参数直接 return
+def localPropertiesFile = project.rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.newDataInputStream())
+}
 localProperties.each { name, value ->
     project.ext[name] = value
 }

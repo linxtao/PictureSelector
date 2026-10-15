@@ -24,6 +24,12 @@ android {
 
     resourcePrefix 'ucrop_'
 
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+
 }
 
 ext {
@@ -31,6 +37,22 @@ ext {
 }
 
 apply from: '../publish.gradle'
+
+apply plugin: 'maven-publish'
+
+// JitPack 发布配置：JitPack 构建时通过环境变量 VERSION 传入 tag 名，本地构建回退到 config.gradle 的 versionName
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.linxtao'
+                artifactId = 'ucrop'
+                version = System.getenv('VERSION') ?: cfgs.versionName
+            }
+        }
+    }
+}
 
 dependencies {
     implementation "androidx.appcompat:appcompat:${cfgs.version_appcompat}"
